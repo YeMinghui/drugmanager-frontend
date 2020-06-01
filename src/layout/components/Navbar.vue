@@ -5,25 +5,26 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      用户名:{{user.name}}, 角色:{{role.localeName}}
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+<!--          <img :src="'imageView2/1/w/80/h/80'" class="admin-avatar">-->
+          <svg-icon icon-class="user" class="user-avatar"></svg-icon>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
+          <router-link to="/common/info">
             <el-dropdown-item>
-              Home
+              个人资料
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
+          <router-link to="/common/password">
+            <el-dropdown-item>
+              修改密码
+            </el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">注销</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -44,8 +45,13 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
     ])
+  },
+  data() {
+    return {
+      role: this.$store.getters.roles,
+      user: this.$store.getters.user
+    }
   },
   methods: {
     toggleSideBar() {

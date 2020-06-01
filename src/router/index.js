@@ -51,123 +51,190 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard'}
     }]
   },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
+
+//异步挂载的路由
+//动态需要根据权限加载的路由表
+export const asyncRouterMap = [
+
+  {
+    path: '/common',
+    component: Layout,
+    redirect: '/common/info',
+    name: 'Common',
+    meta: {title: '个人', icon: 'user'},
+    children: [
+      {
+        path: 'info',
+        name: 'Info',
+        component: () => import('@/views/user/info'),
+        meta: {title: '个人信息', icon: 'user'}
+      },
+      {
+        path: 'password',
+        name: 'Password',
+        component: () => import('@/views/user/password'),
+        meta: {title: '密码修改', icon: 'password'}
+      }
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/list',
+    name: 'UserManage',
+    meta: {title: '用户管理', icon: 'usermanage', roles: ['admin']},
+    children: [
+      {
+        path: 'list',
+        name: 'UserList',
+        component: () => import('@/views/user/list'),
+        meta: {title: '所有用户', icon: 'users'}
+      },
+      {
+        path: 'add',
+        name: 'UserAdd',
+        component: () => import('@/views/user/add'),
+        meta: {title: '添加用户', icon: 'adduser'}
+      }
+    ]
+  },
+
+  {
+    path: '/depart',
+    component: Layout,
+    name: 'DepartManage',
+    meta: {icon: 'depart', roles: ['admin']},
+    children: [
+      {
+        path: '/depart',
+        name: 'DepartList',
+        component: () => import('@/views/depart/list'),
+        meta: {title: '科室管理'}
+      }
+    ]
+  },
+
+  {
+    path: '/role',
+    component: Layout,
+    redirect: '/role/list',
+    name: 'RoleManage',
+    meta: {roles: ['admin']},
+    children: [
+      {
+        path: 'list',
+        name: 'RoleList',
+        component: () => import('@/views/role/list'),
+        meta: {title: '角色管理', icon: 'roles'}
+      }
+    ]
+  },
+
+  {
+    path: '/manufacturer',
+    name: 'Manufacturer',
+    component: Layout,
+    redirect: '/manufacturer/list',
+    meta: {icon: 'shengchan', roles: ['admin']},
+    children: [
+      {
+        path: 'list',
+        name: 'ManufacturerList',
+        component: () => import('@/views/manufacturer/list'),
+        meta: {title: '厂家管理'}
+      }
+    ]
+  },
+
+  {
+    path: '/supplier',
+    name: 'Supplier',
+    component: Layout,
+    redirect: '/supplier/list',
+    meta: {icon: 'gongyin', roles: ['admin']},
+    children: [
+      {
+        path: 'list',
+        name: 'SupplierList',
+        component: () => import('@/views/supplier/list'),
+        meta: {title: '供应商管理'}
+      }
+    ]
+  },
+
+
+  {
+    path: '/drug',
+    component: Layout,
+    name: 'DrugManage',
+    redirect: '/drug/list',
+    meta: {title: '药品管理', icon: 'drug'},
+    children: [
+      {
+        path: 'list',
+        name: 'DrugList',
+        component: () => import('@/views/drug/list'),
+        meta: {title: '药品信息管理', roles: ['drugmanage']}
+      },
+      {
+        path: 'info',
+        name: 'DrugView',
+        component: () => import('@/views/drug/norole'),
+        meta: {title: '药品查看', roles: ['drug']},
+      }
+    ]
+  },
+
+  {
+    path: '/inventory',
+    component: Layout,
+    name: 'Inventory',
+    meta: {title: '库存管理', icon: 'kucun', roles: ['inventory']},
+    children: [
+      {
+        path: 'list',
+        name: 'InventoryList',
+        component: () => import('@/views/inventory/list'),
+        meta: {title: '查看库存'}
+      },
+      {
+        path: 'hist',
+        name: 'InventoryHist',
+        component: () => import('@/views/inventory/oprhist'),
+        meta: {title: '库存变动记录'}
+      }
+    ]
+  },
+
+  {
+    path: '/doctor',
+    component: Layout,
+    name: 'Doctor',
+    redirect: '/geiyao/geiyao',
+    meta: {title: '医生操作', icon: 'doctor', roles: ['drug']},
+    children: [
+      {
+        path: 'geiyao',
+        name: 'UseDrug',
+        component: () => import('@/views/doctor/geiyao'),
+        meta: {title: '给药'}
+      },
+    ]
+  },
+
+  { path: '*', redirect: '/404', hidden: true }
+];
 
 const router = createRouter()
 

@@ -3,21 +3,21 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">用药管理系统</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="workId">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
+          ref="workId"
+          v-model="loginForm.workId"
+          placeholder="工号"
+          name="workId"
           type="text"
           tabindex="1"
-          auto-complete="on"
+          auto-complete="off"
         />
       </el-form-item>
 
@@ -26,11 +26,11 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input
-          :key="passwordType"
           ref="password"
+          :key="passwordType"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -41,44 +41,45 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
-
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+<!--      <el-checkbox-->
+<!--        ref="rememberMe"-->
+<!--        v-model="loginForm.rememberMe"-->
+<!--        name="rememberMe"-->
+<!--        tabindex="3"-->
+<!--      />记住我-->
+<!--      <router-link to="/forget" class="el-link&#45;&#45;primary" style="float: right">忘记密码</router-link>-->
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+    const validateWorkId = (rule, value, callback) => {
+      if (value.length < 1) {
+        callback(new Error('请输入工号'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('请输入正确的密码'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        workId: '',
+        password: '',
+        rememberMe: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        workId: [{ required: true, trigger: 'blur', validator: validateWorkId }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
