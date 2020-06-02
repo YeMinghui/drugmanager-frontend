@@ -50,7 +50,7 @@ export function listInventoryByIds(data) {
 
 export function listInventoryHist(data) {
   return request({
-    url: 'inventoryChange/page',
+    url: '/inventoryChange/page',
     method: 'get',
     params: data
   })
@@ -65,4 +65,10 @@ export function search(data) {
   })
 }
 
-
+export function searchHist(data) {
+  return request({
+    url: '/inventoryChange/search',
+    method: 'post',
+    params: data
+  })
+}

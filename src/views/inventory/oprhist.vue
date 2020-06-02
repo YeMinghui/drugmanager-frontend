@@ -57,7 +57,7 @@
 
 <script>
 
-  import {listInventoryByIds, listInventoryHist, search} from "@/api/inventory";
+  import {listInventoryByIds, listInventoryHist, search, searchHist} from "@/api/inventory";
   import {listDrugsByIds} from "@/api/drug";
 
   export default {
@@ -80,11 +80,11 @@
         tableData: null,
         filter: null,
         serverSearch: '',
-        serverSearchType: "drugId",
+        serverSearchType: "drugName",
         serverSearchTypes: [
-          {name: "药品id", value: "drugId"},
           {name: "药品名称", value: "drugName"},
           {name: "药品通用编码", value: "genericId"},
+          {name: "操作员id", value: "opId"}
         ],
         // don't commit more than one time, when content not change.
         serverSearchHold: false,
@@ -188,7 +188,7 @@
           const value = this.serverSearch
           if (!this.serverSearchHold) {
             this.serverSearchHold = true
-            search({type: type, value: value}).then(response => {
+            searchHist({type: type, value: value}).then(response => {
               this.hookDrugName(response.data)
             }).catch(error => this.$message.error(error));
           }
