@@ -20,7 +20,7 @@
           <el-table-column prop="times" label="次数"></el-table-column>
           <el-table-column>
             <template slot-scope="scope">
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="removeItem(scope.$index)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -103,6 +103,9 @@
             data: info
           }).then(response => this.$message.info(response.data)).catch(error=>this.$message.error(error))
         }
+      },
+      removeItem: function (index) {
+        this.drugs.splice(index, 1)
       }
     }
   }
